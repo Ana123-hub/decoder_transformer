@@ -1,0 +1,31 @@
+# Byte-compiled / Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+
+# Virtual Environments
+venv/
+.venv/
+env/
+
+# PyTorch Checkpoints & Artifacts
+*.pt
+*.pth
+*.bin
+*.ckpt
+
+# Data Directories
+data_raw/
+data_processed/
+logs/
+
+# JSON Data & Config Logs 
+*.json
+!config.json
+
+# IDE & OS specific files
+.vscode/
+.idea/
+.DS_Store
