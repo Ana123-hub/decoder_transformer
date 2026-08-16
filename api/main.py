@@ -15,6 +15,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
 from config.model_config import ModelConfig
+from config.model_config import ModelConfig as TransformerConfig
+from model.transformer import DecoderTransformer
 
 # Fix PyTorch unpickling for checkpoints saved from __main__
 __main__.ModelConfig = ModelConfig
@@ -30,6 +32,34 @@ from api.schemas import (
 # Global artifacts memory cache
 LOADED_ARTIFACTS = {}
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
+def load_phase2_model_and_tokenizer():
+    weights_path = "artifacts/phase2_tinystories/best_model2.pt"
+    tokenizer_path = "artifacts/phase2_tinystories/tokenizer.json"
+    
+    # Default fallback config for CI / testing when artifacts are absent
+    config = TransformerConfig(vocab_size=256, n_layer=2, n_head=2, n_embd=64, block_size=64)
+    model = DecoderTransformer(config)
+    
+    if os.path.exists(weights_path):
+        model.load_state_dict(torch.load(weights_path, map_location="cpu"))
+    model.eval()
+
+    # Fallback dummy tokenizer if tokenizer file is absent
+    if os.path.exists(tokenizer_path):
+        # Load real tokenizer
+        from tokenizer.bpe_tokenizer import BPETokenizer
+        tokenizer = BPETokenizer.load(tokenizer_path)
+    else:
+        # Simple dummy tokenizer interface for CI testing
+        class DummyTokenizer:
+            def encode(self, text: str):
+                return [ord(c) % 256 for c in text] or [1]
+            def decode(self, tokens: list[int]):
+                return "".join(chr(t if 32 <= t <= 126 else 63) for t in tokens)
+        tokenizer = DummyTokenizer()
+
+    return model, tokenizer
 
 
 def get_or_load_phase(phase_key: str):
