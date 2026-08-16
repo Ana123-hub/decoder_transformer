@@ -1,10 +1,10 @@
 # Custom Decoder-Only Transformer: Training, FastAPI & Containerized Inference
 
-![CI Pipeline](https://github.com/Ana123-hub/decoder_transformer/actions/workflows/ci.yml/badge.svg)
-![Python](https://img.shields.io/badge/Python-3.11-blue.svg)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg)
-![Docker](https://img.shields.io/badge/Docker-Containerized-2496ed.svg)
+[![CI Pipeline](https://github.com/Ana123-hub/decoder_transformer/actions/workflows/ci.yml/badge.svg)](https://github.com/Ana123-hub/decoder_transformer/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg)](https://fastapi.tiangolo.com/)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ed.svg)](https://www.docker.com/)
 
 A lightweight, custom PyTorch implementation of a **Decoder-Only Transformer** built from scratch (causal multi-head self-attention, positional encodings, layer normalization, and feed-forward networks). This project details a two-phase training lifecycle, progressing from character-level Shakespearean text generation to subword tokenized modern narrative generation and packaged into a production-ready FastAPI backend with Docker containerization and CI/CD pipelines.
 
