@@ -2,6 +2,8 @@ import os
 import sys
 import pytest
 from fastapi.testclient import TestClient
+from unittest.mock import MagicMock, patch
+import pytest
 
 # 1. Add project root directory to sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -16,6 +18,22 @@ from api.main import app
 
 # Create test client instance
 client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def mock_model_artifacts():
+    """Mocks model loading and token generation so API tests do not require actual weights."""
+    mock_tokenizer = MagicMock()
+    mock_tokenizer.encode.return_value = [1, 2, 3]
+    mock_tokenizer.decode.return_value = "Once upon a time..."
+
+    mock_model = MagicMock()
+
+    # Target the exact module path where load_artifacts and generate_tokens reside
+    # e.g., if main.py does 'import utils.generation', patch 'utils.generation.load_artifacts'
+    with patch("api.main.load_artifacts", return_value=(mock_model, mock_tokenizer), create=True), \
+         patch("api.main.generate_tokens", return_value="Once upon a time...", create=True):
+        yield
 
 
 # 1. System Health & Metadata Endpoint Tests
