@@ -35,7 +35,6 @@ def mock_model_artifacts():
          patch("api.main.generate_tokens", return_value="Once upon a time...", create=True):
         yield
 
-
 # 1. System Health & Metadata Endpoint Tests
 def test_health_endpoint():
     """Verifies that /health returns HTTP 200 and expected schema fields."""

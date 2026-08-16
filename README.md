@@ -1,12 +1,10 @@
 # Custom Decoder-Only Transformer: Training, FastAPI & Containerized Inference
-
-[![CI Pipeline](https://github.com/Ana123-hub/decoder_transformer/actions/workflows/ci.yml/badge.svg)](https://github.com/Ana123-hub/decoder_transformer/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg)](https://fastapi.tiangolo.com/)
 [![Docker](https://img.shields.io/badge/Docker-Containerized-2496ed.svg)](https://www.docker.com/)
 
-A lightweight, custom PyTorch implementation of a **Decoder-Only Transformer** built from scratch (causal multi-head self-attention, positional encodings, layer normalization, and feed-forward networks). This project details a two-phase training lifecycle, progressing from character-level Shakespearean text generation to subword tokenized modern narrative generation and packaged into a production-ready FastAPI backend with Docker containerization and CI/CD pipelines.
+A lightweight, custom PyTorch implementation of a **Decoder-Only Transformer** built from scratch (causal multi-head self-attention, positional encodings, layer normalization, and feed-forward networks). This project details a two-phase training lifecycle, progressing from character-level Shakespearean text generation to subword tokenized modern narrative generation and packaged into a production-ready FastAPI backend with Docker containerization.
 
 ---
 
@@ -17,7 +15,6 @@ A lightweight, custom PyTorch implementation of a **Decoder-Only Transformer** b
 * **Phase 1 (TinyShakespeare):** Baseline character-level language modeling capturing early structural patterns.
 * **Phase 2 (TinyStories):** Subword-tokenized text synthesis generating coherent, multi-sentence narrative structures.
 * **RESTful FastAPI Service:** Asynchronous inference server supporting dynamic checkpoint selection, health monitoring, and parameter tuning (temperature, max tokens, top-k sampling).
-* **Automated CI/CD Pipeline:** GitHub Actions workflow running automated unit and integration tests on every pull request and push.
 * **Containerized Deployment:** Optimized Docker build (CPU runtime optimized) with Docker Compose for seamless cross-platform execution.
 
 ---
@@ -26,9 +23,6 @@ A lightweight, custom PyTorch implementation of a **Decoder-Only Transformer** b
 
 ```text
 decoder_transformer/
-├── .github/
-│   └── workflows/
-│       └── ci.yml                     # GitHub Actions CI configuration
 ├── api/
 │   ├── __init__.py
 │   ├── main.py                        # FastAPI routes & server application
@@ -168,10 +162,11 @@ curl -X 'POST' \
   "tokens_generated": 50
 } 
 ```
-
-# Continuous Integration (CI)
-This repository enforces automated testing via GitHub Actions on every push or pull request to main. The workflow:
-* Sets up a clean Ubuntu-latest runner with Python 3.11.
-* Installs core dependencies and PyTorch CPU binaries.
-* Executes the full pytest suite across model and API integration tests.
-
+# Architectural Design: Multi-Phase Training vs. QLoRA
+Rather than applying parameter-efficient fine-tuning (PEFT) methods like QLoRA—which freeze base weights and inject low-rank adapters—this project utilizes a structured multi-phase pre-training curriculum:
+* Full Representation Learning: 
+Pre-training from scratch across distinct phases allows all attention heads and MLP layers to learn fundamental language patterns, Rotary Positional Embeddings (RoPE), and KV-cache dynamics without the rank constraints or quantization bottlenecks inherent to QLoRA.
+* Controlled Optimization: 
+Multi-phase training enables custom learning rate schedules, warmups, and loss objective adjustments tailored specifically to raw token distributions at each stage of model convergence.
+* Zero Adapter Overhead:
+Training the full parameter set eliminates the inference latency, parameter merging steps, and extra adapter key management required when deploying LoRA/QLoRA models in production.
