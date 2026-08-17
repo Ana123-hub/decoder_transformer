@@ -104,17 +104,17 @@ decoder_transformer/
 * Google Colab
 
 ### Installation
-### Clone repository
+* Clone repository
 ```bash
 git clone [https://github.com/Ana123-hub/decoder_transformer.git](https://github.com/Ana123-hub/decoder_transformer.git)
 cd decoder_transformer
 ```
-### Create virtual environment
+* Create virtual environment
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
-### Install dependencies
+* Install dependencies
 ```bash
 python -m pip install --upgrade pip
 pip install -r requirements.
@@ -123,15 +123,15 @@ pip install -r requirements.
 ## Running Test Suite (pytest)
 This project uses pytest for unit testing model tensor transformations and FastAPI HTTP endpoints.
 
-### Run all tests with verbose output
+* Run all tests with verbose output
 ```bash
 python -m pytest -v
 ```
-### Run API integration tests specifically
+* Run API integration tests specifically
 ```bash
 python -m pytest tests/test_api.py -v
 ```
-### Run tests with coverage report
+* Run tests with coverage report
 ```bash
 python -m pytest --cov=src --cov=api tests/
 ```
@@ -139,8 +139,8 @@ python -m pytest --cov=src --cov=api tests/
 ## REST API Documentation & Endpoints
 Once the application is running (locally or via Docker), interactive OpenAPI documentation is available at http://localhost:8000/docs.
 
-## Example API Request (POST /generate)
-### cURL Command:
+### Example API Request (POST /generate)
+* cURL Command:
 ```bash
 curl -X 'POST' \
   'http://localhost:8000/generate' \
@@ -153,27 +153,27 @@ curl -X 'POST' \
     "top_k": 40
   }'
   ```
-  ### JSON Response:
+  * JSON Response:
   ```json
   {
   "phase": "2",
   "prompt": "Once upon a time, a small puppy",
   "generated_text": "Once upon a time, a small puppy found a shiny red ball in the garden. He bounced with joy and ran toward his friend, the little bird.",
   "tokens_generated": 50
-} 
-```
+  }
+  ```
+   
 
-## Running with Docker & Docker Compose
-### Using Docker Compose
-# Build and start container in detached mode
+## Running with Docker Compose
+* Build and start container in detached mode
 ```bash
 docker compose up --build -d
 ```
-# View live container logs
+* View live container logs
 ```bash
 docker compose logs -f transformer-api
 ```
-# Stop and teardown container service
+* Stop and teardown container service
 ```bash
 docker compose down
 ```
