@@ -162,6 +162,22 @@ curl -X 'POST' \
   "tokens_generated": 50
 } 
 ```
+
+## Running with Docker & Docker Compose
+### Using Docker Compose
+# Build and start container in detached mode
+```bash
+docker compose up --build -d
+```
+# View live container logs
+```bash
+docker compose logs -f transformer-api
+```
+# Stop and teardown container service
+```bash
+docker compose down
+```
+
 # Architectural Design: Multi-Phase Training vs. QLoRA
 Rather than applying parameter-efficient fine-tuning (PEFT) methods like QLoRA—which freeze base weights and inject low-rank adapters—this project utilizes a structured multi-phase pre-training curriculum:
 * Full Representation Learning: 
